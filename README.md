@@ -11,5 +11,5 @@ $ echo "My path is: {{ PATH }}" | ./stache
 
 # Read from a file
 $ echo "My username is {{ USER }}" > test.mustache
-$ ./stache test.mustache > test.txt
+$ ./stache -f test.mustache > test.txt
 ```

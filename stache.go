@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"flag"
 	"fmt"
 	"github.com/hoisie/mustache"
@@ -10,15 +9,19 @@ import (
 	"strings"
 )
 
+var file string
+
 func init() {
 	version := false
 
 	flag.BoolVar(&version, "version", false, "Print the version")
 	flag.BoolVar(&version, "v", false, "Print the version")
+	flag.StringVar(&file, "f", "", "A template file")
+	flag.StringVar(&file, "file", "", "A template file")
 	flag.Parse()
 
 	if version {
-		fmt.Println("Version:", Version)
+		fmt.Println("Version:", VERSION)
 		os.Exit(0)
 	}
 }
@@ -43,25 +46,20 @@ func main() {
 	var templateString string
 
 	if info.Size() > 0 {
-		// We have a unix pipe
-		scanner := bufio.NewScanner(os.Stdin)
-		for scanner.Scan() {
-			templateString += scanner.Text()
-		}
-		if err := scanner.Err(); err != nil {
-			fmt.Println("FAIL")
-			os.Exit(1)
-		}
-	} else if flag.Arg(0) != "" {
+		// We have a uni pipe
+		stdinBytes, _ := ioutil.ReadAll(os.Stdin)
+		templateString = string(stdinBytes)
+	} else if file != "" {
 		// We got a filename as the first argument
-		fileData, _ := ioutil.ReadFile(flag.Arg(0))
+		fileData, _ := ioutil.ReadFile(file)
 		templateString = string(fileData)
 	} else {
 		// TODO: Print usage
-		fmt.Println("Print usage here")
+		// fmt.Println("Print usage here")
+		flag.Usage()
 		os.Exit(1)
 	}
 
 	// Render the template if we haven't exited
-	fmt.Println(renderTemplate(templateString))
+	fmt.Print(renderTemplate(templateString))
 }

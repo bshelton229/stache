@@ -3,6 +3,13 @@
 Compile a mustache template using ENV as the context.
 
 ```
-$ echo "Hello {{ NAME }}" > template.mustache
-$ NAME=Bryan ./stache template.mustache
+# Download and make executable
+$ curl -o stache -L https://github.com/bshelton229/stache/blob/master/build/stache.linux.amd64\?raw\=true && chmod 755 stache
+
+# Pipe input
+$ echo "My path is: {{ PATH }}" | ./stache
+
+# Read from a file
+$ echo "My username is {{ USER }}" > test.mustache
+$ ./stache test.mustache > test.txt
 ```

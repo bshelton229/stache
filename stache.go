@@ -9,6 +9,19 @@ import (
 	"strings"
 )
 
+func init() {
+	version := false
+
+	flag.BoolVar(&version, "version", false, "Print the version")
+	flag.BoolVar(&version, "v", false, "Print the version")
+	flag.Parse()
+
+	if version {
+		fmt.Println("Welcome to stache version", Version)
+		os.Exit(0)
+	}
+}
+
 func getContext() map[string]string {
 	context := make(map[string]string)
 

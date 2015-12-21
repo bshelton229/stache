@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"github.com/hoisie/mustache"
@@ -17,7 +18,7 @@ func init() {
 	flag.Parse()
 
 	if version {
-		fmt.Println("Welcome to stache version", Version)
+		fmt.Println("Version:", Version)
 		os.Exit(0)
 	}
 }
@@ -32,9 +33,35 @@ func getContext() map[string]string {
 	return context
 }
 
+func renderTemplate(data string) string {
+	tmplS, _ := mustache.ParseString(data)
+	return tmplS.Render(getContext(), &tmplS)
+}
+
 func main() {
-	// TODO: Add some kind, any kind, of error handling and alerting
-	tmplData, _ := ioutil.ReadFile(flag.Arg(0))
-	tmplS, _ := mustache.ParseString(string(tmplData))
-	fmt.Println(tmplS.Render(getContext(), &tmplS))
+	info, _ := os.Stdin.Stat()
+	var templateString string
+
+	if info.Size() > 0 {
+		// We have a unix pipe
+		scanner := bufio.NewScanner(os.Stdin)
+		for scanner.Scan() {
+			templateString += scanner.Text()
+		}
+		if err := scanner.Err(); err != nil {
+			fmt.Println("FAIL")
+			os.Exit(1)
+		}
+	} else if flag.Arg(0) != "" {
+		// We got a filename as the first argument
+		fileData, _ := ioutil.ReadFile(flag.Arg(0))
+		templateString = string(fileData)
+	} else {
+		// TODO: Print usage
+		fmt.Println("Print usage here")
+		os.Exit(1)
+	}
+
+	// Render the template if we haven't exited
+	fmt.Println(renderTemplate(templateString))
 }

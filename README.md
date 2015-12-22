@@ -16,7 +16,7 @@ $ curl -o stache -L https://github.com/bshelton229/stache/blob/master/build/stac
 $ echo "My home directory is: {{ HOME }}" | stache
 ```
 
-# Read from a file
+#### Read from a file
 
 ```
 $ echo "My username is {{ USER }}" > test.mustache

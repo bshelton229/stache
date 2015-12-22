@@ -10,6 +10,7 @@ import (
 )
 
 var file string
+var outFile string
 
 func init() {
 	version := false
@@ -17,6 +18,7 @@ func init() {
 	flag.BoolVar(&version, "version", false, "Print the version")
 	flag.BoolVar(&version, "v", false, "Print the version")
 	flag.StringVar(&file, "f", "", "A template file")
+	flag.StringVar(&outFile, "o", "", "Save output to a file")
 	flag.StringVar(&file, "file", "", "A template file")
 	flag.Parse()
 
@@ -54,12 +56,15 @@ func main() {
 		fileData, _ := ioutil.ReadFile(file)
 		templateString = string(fileData)
 	} else {
-		// TODO: Print usage
-		// fmt.Println("Print usage here")
 		flag.Usage()
 		os.Exit(1)
 	}
 
-	// Render the template if we haven't exited
-	fmt.Print(renderTemplate(templateString))
+	output := renderTemplate(templateString)
+
+	if outFile == "" {
+		fmt.Print(output)
+	} else {
+		ioutil.WriteFile(outFile, []byte(output), 0644)
+	}
 }

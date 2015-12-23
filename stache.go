@@ -48,7 +48,7 @@ func main() {
 	var templateString string
 
 	if info.Size() > 0 {
-		// We have a uni pipe
+		// We have a unix pipe
 		stdinBytes, _ := ioutil.ReadAll(os.Stdin)
 		templateString = string(stdinBytes)
 	} else if file != "" {

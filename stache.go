@@ -44,10 +44,10 @@ func renderTemplate(data string) string {
 }
 
 func main() {
-	info, _ := os.Stdin.Stat()
+	stat, _ := os.Stdin.Stat()
 	var templateString string
 
-	if info.Size() > 0 {
+	if (stat.Mode() & os.ModeCharDevice) == 0 {
 		// We have a unix pipe
 		stdinBytes, _ := ioutil.ReadAll(os.Stdin)
 		templateString = string(stdinBytes)

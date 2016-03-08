@@ -1,3 +1,6 @@
+install:
+	go install
+
 default:
 	go build -o build/stache
 

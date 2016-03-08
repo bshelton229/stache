@@ -32,7 +32,7 @@ func getContext() map[string]string {
 	context := make(map[string]string)
 
 	for _, el := range os.Environ() {
-		a := strings.Split(el, "=")
+		a := strings.SplitN(el, "=", 2)
 		context[a[0]] = a[1]
 	}
 	return context

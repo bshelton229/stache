@@ -53,7 +53,11 @@ func main() {
 		templateString = string(stdinBytes)
 	} else if file != "" {
 		// We got a filename as the first argument
-		fileData, _ := ioutil.ReadFile(file)
+		fileData, err := ioutil.ReadFile(file)
+		if err != nil {
+			fmt.Println("Error:", err)
+			os.Exit(1)
+		}
 		templateString = string(fileData)
 	} else {
 		flag.Usage()

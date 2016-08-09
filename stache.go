@@ -28,19 +28,18 @@ func init() {
 	}
 }
 
-func getContext() map[string]string {
+func parseContextStrings(cs []string) map[string]string {
 	context := make(map[string]string)
 
-	for _, el := range os.Environ() {
+	for _, el := range cs {
 		a := strings.SplitN(el, "=", 2)
 		context[a[0]] = a[1]
 	}
 	return context
 }
 
-func renderTemplate(data string) string {
-	tmplS, _ := mustache.ParseString(data)
-	return tmplS.Render(getContext(), &tmplS)
+func renderTemplate(data string, context map[string]string) string {
+	return mustache.Render(data, context)
 }
 
 func main() {
@@ -65,7 +64,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	output := renderTemplate(templateString)
+	output := renderTemplate(templateString, parseContextStrings(os.Environ()))
 
 	if outFile == "" {
 		fmt.Print(output)

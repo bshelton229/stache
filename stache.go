@@ -47,11 +47,7 @@ func main() {
 	stat, _ := os.Stdin.Stat()
 	var templateString string
 
-	if (stat.Mode() & os.ModeCharDevice) == 0 {
-		// We have a unix pipe
-		stdinBytes, _ := ioutil.ReadAll(os.Stdin)
-		templateString = string(stdinBytes)
-	} else if file != "" {
+	if file != "" {
 		// We got a filename as the first argument
 		fileData, err := ioutil.ReadFile(file)
 		if err != nil {
@@ -59,6 +55,11 @@ func main() {
 			os.Exit(1)
 		}
 		templateString = string(fileData)
+
+	} else if (stat.Mode() & os.ModeCharDevice) == 0 {
+		// We have a unix pipe
+		stdinBytes, _ := ioutil.ReadAll(os.Stdin)
+		templateString = string(stdinBytes)
 	} else {
 		flag.Usage()
 		os.Exit(1)

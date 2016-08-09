@@ -1,14 +1,6 @@
 ## Stache
 
-Compile a mustache template using ENV as the context.
-
-#### Download and make executable to install
-
-Download the appropriate architecture.
-
-```
-$ curl -o stache -L https://github.com/bshelton229/stache/blob/master/build/stache.linux.amd64\?raw\=true && chmod 755 stache
-```
+Render a mustache template using ENV as the context.
 
 #### Pipe input
 

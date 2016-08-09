@@ -1,6 +1,6 @@
 ## Stache
 
-Render a mustache template using ENV as the context.
+A CLI tool for rendering mustache templates using ENV as the context.
 
 ### Pipe input
 
